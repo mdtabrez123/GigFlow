@@ -62,7 +62,7 @@ export const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ isOpen, onCl
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <div className="p-6">
           {isLoading ? (
             <div className="flex flex-col items-center justify-center py-12">
@@ -90,13 +90,13 @@ export const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ isOpen, onCl
 
               <div className="grid grid-cols-2 gap-4 border-y border-gray-100 dark:border-gray-700 py-4">
                 <div>
-                  <p className="text-sm text-gray-500 flex items-center gap-1.5"><Globe className="w-4 h-4"/> Source</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-1.5"><Globe className="w-4 h-4" /> Source</p>
                   <span className={clsx('mt-1 inline-block px-2 py-0.5 text-xs font-medium rounded', sourceColors[lead.source])}>
                     {lead.source}
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm text-gray-500 flex items-center gap-1.5"><Calendar className="w-4 h-4"/> Created</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-1.5"><Calendar className="w-4 h-4" /> Created</p>
                   <p className="text-sm font-medium text-gray-900 dark:text-white mt-1">
                     {format(new Date(lead.createdAt), 'MMM dd, yyyy h:mm a')}
                   </p>
@@ -104,7 +104,7 @@ export const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ isOpen, onCl
               </div>
 
               <div>
-                <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-2"><FileText className="w-4 h-4"/> Notes</p>
+                <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-2"><FileText className="w-4 h-4" /> Notes</p>
                 <div className="bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl text-sm text-gray-700 dark:text-gray-300 whitespace-pre-wrap">
                   {lead.notes || <span className="italic text-gray-400">No notes provided.</span>}
                 </div>
@@ -112,7 +112,7 @@ export const LeadDetailsModal: React.FC<LeadDetailsModalProps> = ({ isOpen, onCl
 
               {lead.assignedTo && (
                 <div>
-                  <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-2"><Tag className="w-4 h-4"/> Assigned To</p>
+                  <p className="text-sm text-gray-500 flex items-center gap-1.5 mb-2"><Tag className="w-4 h-4" /> Assigned To</p>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">
                       {lead.assignedTo.name.charAt(0)}

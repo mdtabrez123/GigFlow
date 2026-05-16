@@ -43,19 +43,19 @@ export const LeadTable: React.FC<LeadTableProps> = ({
   onDelete,
 }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
       {/* Table Header & Filters */}
-      <div className="p-5 border-b border-gray-200 bg-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-5 border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-lg font-bold text-gray-900">Recent Leads</h2>
-          <p className="text-sm text-gray-500">Manage and track your incoming leads</p>
+          <h2 className="text-lg font-bold text-gray-900 dark:text-white">Recent Leads</h2>
+          <p className="text-sm text-gray-500 dark:text-gray-400">Manage and track your incoming leads</p>
         </div>
-        
+
         <div className="flex items-center gap-3">
           <select
             value={statusFilter}
             onChange={(e) => onStatusChange(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5"
+            className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5"
           >
             <option value="">All Statuses</option>
             <option value="New">New</option>
@@ -67,7 +67,7 @@ export const LeadTable: React.FC<LeadTableProps> = ({
           <select
             value={sourceFilter}
             onChange={(e) => onSourceChange(e.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5"
+            className="bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5"
           >
             <option value="">All Sources</option>
             <option value="Website">Website</option>
@@ -79,8 +79,8 @@ export const LeadTable: React.FC<LeadTableProps> = ({
 
       {/* Table Content */}
       <div className="overflow-x-auto">
-        <table className="w-full text-sm text-left text-gray-500">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 border-b border-gray-200">
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
             <tr>
               <th scope="col" className="px-6 py-4">Lead Name</th>
               <th scope="col" className="px-6 py-4">Status</th>
@@ -112,20 +112,20 @@ export const LeadTable: React.FC<LeadTableProps> = ({
             ) : leads.length === 0 ? (
               <tr>
                 <td colSpan={5} className="px-6 py-16 text-center">
-                  <div className="flex flex-col items-center justify-center text-gray-500">
-                    <FileX2 className="w-12 h-12 mb-3 text-gray-300" />
-                    <p className="text-lg font-medium text-gray-900">No leads found</p>
+                  <div className="flex flex-col items-center justify-center text-gray-500 dark:text-gray-400">
+                    <FileX2 className="w-12 h-12 mb-3 text-gray-300 dark:text-gray-600" />
+                    <p className="text-lg font-medium text-gray-900 dark:text-white">No leads found</p>
                     <p className="text-sm mt-1">Try adjusting your search or filters.</p>
                   </div>
                 </td>
               </tr>
             ) : (
               leads.map((lead) => (
-                <tr key={lead.id} className="bg-white border-b hover:bg-gray-50 transition-colors">
+                <tr key={lead.id || lead._id} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex flex-col">
-                      <span className="font-semibold text-gray-900">{lead.name}</span>
-                      <span className="text-xs text-gray-500">{lead.email}</span>
+                      <span className="font-semibold text-gray-900 dark:text-white">{lead.name}</span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">{lead.email}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4">

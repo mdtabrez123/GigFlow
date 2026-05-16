@@ -17,11 +17,11 @@ function Dashboard() {
   const [sortFilter, setSortFilter] = useState('latest');
 
   const { isExporting, exportError, handleExport } = useExportLeads();
-  
+
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [pagination, setPagination] = useState<Pagination>({
     total: 0,
     page: 1,
@@ -49,7 +49,7 @@ function Dashboard() {
     const loadLeads = async () => {
       setIsLoading(true);
       setError(null);
-      
+
       try {
         const response = await fetchLeads({
           search: debouncedSearch,
@@ -59,7 +59,7 @@ function Dashboard() {
           page: pagination.page,
           limit: pagination.limit,
         });
-        
+
         setLeads(response.data);
         setPagination(response.pagination);
       } catch (err: any) {
@@ -118,10 +118,10 @@ function Dashboard() {
   return (
     <div className="flex bg-gray-50 dark:bg-gray-900 min-h-screen transition-colors duration-200">
       <Sidebar />
-      
+
       <div className="flex-1 sm:ml-64 flex flex-col">
         <Topbar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
-        
+
         <main className="p-6 flex-1 overflow-x-hidden">
           <div className="mb-6 flex justify-between items-center">
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Leads Dashboard</h1>
@@ -135,7 +135,7 @@ function Dashboard() {
               >
                 <Plus className="w-4 h-4" /> Create Lead
               </button>
-              
+
               <button
                 onClick={() => handleExport({ status: statusFilter, source: sourceFilter, search: debouncedSearch })}
                 disabled={isExporting || leads.length === 0}
@@ -150,7 +150,7 @@ function Dashboard() {
               )}
             </div>
           </div>
-          
+
           <div className="mb-4 flex flex-wrap gap-4 items-center justify-end">
             <select
               value={sortFilter}
@@ -174,14 +174,14 @@ function Dashboard() {
             onEdit={handleEdit}
             onDelete={handleDelete}
           />
-          
+
           {/* Pagination Controls */}
           {!isLoading && !error && leads.length > 0 && (
             <div className="flex items-center justify-between mt-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-200">
               <span className="text-sm text-gray-700">
                 Showing <span className="font-semibold text-gray-900">{(pagination.page - 1) * pagination.limit + 1}</span> to <span className="font-semibold text-gray-900">{Math.min(pagination.page * pagination.limit, pagination.total)}</span> of <span className="font-semibold text-gray-900">{pagination.total}</span> Entries
               </span>
-              
+
               <div className="inline-flex items-center gap-2">
                 <button
                   onClick={handlePrevPage}

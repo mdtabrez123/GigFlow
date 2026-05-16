@@ -12,7 +12,7 @@ const navItems = [
 
 export const Sidebar: React.FC = () => {
   const { logout } = useAuth();
-  
+
   return (
     <aside className="fixed top-0 left-0 z-40 w-64 h-screen bg-[#111827] border-r border-gray-800 transition-transform -translate-x-full sm:translate-x-0">
       <div className="h-full px-4 py-6 overflow-y-auto">

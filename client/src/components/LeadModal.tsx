@@ -12,13 +12,13 @@ interface LeadModalProps {
 
 export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess, lead }) => {
   const isEditing = !!lead;
-  
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [status, setStatus] = useState<LeadStatus>('New');
   const [source, setSource] = useState<LeadSource>('Website');
   const [notes, setNotes] = useState('');
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -47,7 +47,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
-    
+
     try {
       const payload = { name, email, status, source, notes };
       if (isEditing && lead?.id) {
@@ -74,14 +74,14 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
             <X className="w-5 h-5" />
           </button>
         </div>
-        
+
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
           {error && (
             <div className="p-3 bg-red-50 text-red-600 rounded-lg text-sm">
               {error}
             </div>
           )}
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Name</label>
             <input
@@ -92,7 +92,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Email</label>
             <input
@@ -103,7 +103,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
             <select
@@ -117,7 +117,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
               <option value="Lost">Lost</option>
             </select>
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Source</label>
             <select
@@ -140,7 +140,7 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
               onChange={(e) => setNotes(e.target.value)}
             />
           </div>
-          
+
           <div className="pt-4 flex justify-end gap-3">
             <button
               type="button"
