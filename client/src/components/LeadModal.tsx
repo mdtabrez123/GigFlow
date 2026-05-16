@@ -50,8 +50,9 @@ export const LeadModal: React.FC<LeadModalProps> = ({ isOpen, onClose, onSuccess
 
     try {
       const payload = { name, email, status, source, notes };
-      if (isEditing && lead?.id) {
-        await updateLead(lead.id, payload);
+      const leadId = lead?.id || (lead as any)?._id;
+      if (isEditing && leadId) {
+        await updateLead(leadId, payload);
       } else {
         await createLead(payload);
       }

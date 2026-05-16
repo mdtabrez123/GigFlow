@@ -85,7 +85,7 @@ function Dashboard() {
   const handleDelete = async (lead: Lead) => {
     if (window.confirm(`Are you sure you want to delete the lead: ${lead.name}?`)) {
       try {
-        await deleteLead(lead.id);
+        await deleteLead(lead.id || (lead as any)._id);
         setPagination((prev) => ({ ...prev, page: 1 }));
       } catch (err: any) {
         alert('Failed to delete lead: ' + (err.response?.data?.message || err.message));
@@ -99,7 +99,7 @@ function Dashboard() {
   };
 
   const handleView = (lead: Lead) => {
-    setLeadToView(lead.id);
+    setLeadToView(lead.id || (lead as any)._id);
     setIsDetailsModalOpen(true);
   };
 

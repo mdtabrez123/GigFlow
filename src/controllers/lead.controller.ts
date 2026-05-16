@@ -185,13 +185,13 @@ export const getLeadById = catchAsync(
     }
 
     // Ownership check for Sales Users
-    if (
-      req.user?.role === 'Sales User' &&
-      lead.assignedTo?.toString() !== req.user.id
-    ) {
-      return next(
-        new AppError('You do not have permission to view this lead.', 403),
-      );
+    if (req.user?.role === 'Sales User') {
+      const assignedId = lead.assignedTo?._id || lead.assignedTo;
+      if (assignedId?.toString() !== req.user.id) {
+        return next(
+          new AppError('You do not have permission to view this lead.', 403),
+        );
+      }
     }
 
     sendSuccess(res, 200, 'Lead retrieved successfully.', lead);
@@ -245,13 +245,13 @@ export const updateLead = catchAsync(
       return next(new AppError(`No lead found with ID: ${req.params.id}`, 404));
     }
 
-    if (
-      req.user?.role === 'Sales User' &&
-      existing.assignedTo?.toString() !== req.user.id
-    ) {
-      return next(
-        new AppError('You do not have permission to update this lead.', 403),
-      );
+    if (req.user?.role === 'Sales User') {
+      const assignedId = existing.assignedTo?._id || existing.assignedTo;
+      if (assignedId?.toString() !== req.user.id) {
+        return next(
+          new AppError('You do not have permission to update this lead.', 403),
+        );
+      }
     }
 
     const updates = req.body as UpdateLeadDTO;

@@ -121,7 +121,7 @@ export const LeadTable: React.FC<LeadTableProps> = ({
               </tr>
             ) : (
               leads.map((lead) => (
-                <tr key={lead.id || lead._id} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <tr key={lead.id || (lead as any)._id} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex flex-col">
                       <span className="font-semibold text-gray-900 dark:text-white">{lead.name}</span>
