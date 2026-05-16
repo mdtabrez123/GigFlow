@@ -3,7 +3,7 @@ import type { PaginatedResponse, Lead } from './types';
 
 // Simple mock interceptor for token (assumes token is stored in localStorage)
 const apiClient = axios.create({
-  baseURL: 'http://localhost:5000/api', // Adjust if backend is on different port
+  baseURL: 'https://gigflow-syfe.onrender.com/api', // Live Render backend
   headers: {
     'Content-Type': 'application/json',
   },
