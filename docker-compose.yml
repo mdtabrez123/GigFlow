@@ -1,0 +1,100 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# docker-compose.yml
+# Orchestrates: MongoDB + Express Backend + Vite/nginx Frontend
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# Services:
+#   mongo    — MongoDB 7 database (persisted via named volume)
+#   backend  — Node.js / Express API (built from ./Dockerfile)
+#   frontend — React app served via nginx (built from ./client/Dockerfile)
+#
+# Usage:
+#   docker compose up --build        # first run
+#   docker compose up -d             # background
+#   docker compose down -v           # stop + delete volumes
+#
+# Access:
+#   Frontend : http://localhost:3000
+#   Backend  : http://localhost:5000  (direct, bypasses nginx)
+#   MongoDB  : mongodb://localhost:27017 (for local Compass access)
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+
+  # ── MongoDB ──────────────────────────────────────────────────────────────────
+  mongo:
+    image: mongo:7.0
+    container_name: gigflow_mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASS:-secret}
+      MONGO_INITDB_DATABASE: gigflow_leads
+    ports:
+      - "27017:27017"        # Expose for local Compass / mongosh access
+    volumes:
+      - mongo_data:/data/db  # Persist data between restarts
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.runCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    networks:
+      - gigflow_net
+
+  # ── Express Backend ───────────────────────────────────────────────────────────
+  backend:
+    build:
+      context: .           # Root of the repo (where ./Dockerfile lives)
+      dockerfile: Dockerfile
+      target: production   # Use the lean multi-stage production stage
+    container_name: gigflow_backend
+    restart: unless-stopped
+    depends_on:
+      mongo:
+        condition: service_healthy  # Wait for Mongo to be ready
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      # Connects with auth credentials set in the mongo service
+      MONGO_URI: mongodb://${MONGO_ROOT_USER:-admin}:${MONGO_ROOT_PASS:-secret}@mongo:27017/gigflow_leads?authSource=admin
+      JWT_SECRET: ${JWT_SECRET:-change_me_in_production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      ALLOWED_ORIGINS: http://localhost:3000
+    ports:
+      - "5000:5000"        # Direct API access (dev/testing)
+    networks:
+      - gigflow_net
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:5000/health || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  # ── React Frontend (nginx) ────────────────────────────────────────────────────
+  frontend:
+    build:
+      context: ./client    # The React client directory
+      dockerfile: Dockerfile
+      target: production
+    container_name: gigflow_frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy  # Wait for backend to be healthy
+    ports:
+      - "3000:80"          # Frontend accessible at http://localhost:3000
+    networks:
+      - gigflow_net
+
+# ── Named Volumes ─────────────────────────────────────────────────────────────
+volumes:
+  mongo_data:
+    driver: local
+
+# ── Networks ──────────────────────────────────────────────────────────────────
+networks:
+  gigflow_net:
+    driver: bridge
